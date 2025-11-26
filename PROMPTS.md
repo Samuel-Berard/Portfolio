@@ -96,7 +96,7 @@ Créer un fichier CSS moderne avec :
 - Navigation sticky avec styles
 - Hero section avec layout grid deux colonnes
 - Styles pour toutes les sections
-- Barres de compétences animées
+- Compétences affichées en badges (sans barres de progression)
 - Carrousel de projets stylisé avec boutons de navigation
 - Formulaire moderne avec validation visuelle
 - Animations : fadeIn, fadeInUp, slideInRight
@@ -116,7 +116,7 @@ Créer un fichier CSS moderne avec :
 - ✅ Styles de formulaire avec états (focus, error)
 - ✅ Media queries pour tous les breakpoints
 - ✅ Carrousel stylisé avec indicateurs
-- ✅ Barres de compétences avec gradients
+- ✅ Badges de compétences avec hover effects
 - ✅ Ombres et effets modernes
 
 **Fichier créé :**
@@ -162,8 +162,8 @@ Créer un fichier JavaScript complet avec :
 
 6. Animations au scroll :
    - Intersection Observer
-   - Animation des barres de compétences au scroll
-   - Fade in des sections
+   - Animation des sections au scroll
+   - Fade in progressif
 
 7. Smooth scroll :
    - Navigation fluide vers sections

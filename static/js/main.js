@@ -351,11 +351,6 @@ function initScrollAnimations() {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                
-                // Animer les barres de compétences
-                if (entry.target.classList.contains('skill-category')) {
-                    animateSkillBars(entry.target);
-                }
             }
         });
     }, observerOptions);
@@ -365,20 +360,6 @@ function initScrollAnimations() {
     animatedElements.forEach(el => {
         el.classList.add('scroll-animate');
         observer.observe(el);
-    });
-}
-
-function animateSkillBars(skillCategory) {
-    const skillBars = skillCategory.querySelectorAll('.skill-progress');
-    
-    skillBars.forEach((bar, index) => {
-        setTimeout(() => {
-            const width = bar.style.width;
-            bar.style.width = '0%';
-            setTimeout(() => {
-                bar.style.width = width;
-            }, 50);
-        }, index * 100);
     });
 }
 

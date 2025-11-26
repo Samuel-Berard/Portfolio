@@ -341,33 +341,29 @@ body.dark-mode .sun-icon {
 
 .skill-items {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
     gap: var(--spacing-sm);
 }
 
-.skill-item {
-    margin-bottom: var(--spacing-sm);
-}
-
-.skill-name {
-    display: block;
-    margin-bottom: var(--spacing-xs);
+.skill-badge {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-color);
     color: var(--text-color);
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
     font-weight: 500;
+    font-size: 0.95rem;
+    transition: all var(--transition-speed);
+    cursor: default;
 }
 
-.skill-bar {
-    background: var(--border-color);
-    height: 10px;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.skill-progress {
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    border-radius: 10px;
-    transition: width 1s ease;
+.skill-badge:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
 }
 
 /* ===== Projects Section ===== */

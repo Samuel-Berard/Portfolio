@@ -100,9 +100,9 @@ Tous les objectifs ont été atteints selon les consignes du défi.
 
 ### Section Compétences
 - [x] 3 catégories de compétences
-- [x] 9 compétences avec barres de progression
-- [x] Gradients sur les barres
-- [x] Animation des barres au scroll
+- [x] Badges de compétences (sans pourcentages)
+- [x] Hover effects sur les badges
+- [x] Animation au scroll
 - [x] Grid responsive
 
 ### Section Projets

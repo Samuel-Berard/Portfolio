@@ -13,7 +13,7 @@ Site web portfolio/CV moderne et interactif créé avec Go, HTML5, CSS3 et JavaS
 ### 🎯 Sections
 1. **Hero** - Présentation avec CTA
 2. **À propos** - Biographie et statistiques
-3. **Compétences** - Barres de progression animées par catégories
+3. **Compétences** - Badges de compétences organisés par catégories
 4. **Projets** - Carrousel interactif avec filtrage par catégorie
 5. **Contact** - Formulaire avec validation en temps réel
 
