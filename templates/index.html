@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">[Entrez votre nom/logo ici]</div>
+            <ul class="nav-links">
+                <li><a href="#about">À propos</a></li>
+                <li><a href="#skills">Compétences</a></li>
+                <li><a href="#projects">Projets</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <span class="sun-icon">☀️</span>
+                <span class="moon-icon">🌙</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content fade-in">
+                <h1>[Entrez votre nom complet ici]</h1>
+                <p class="subtitle">[Entrez votre titre/profession ici]</p>
+                <p class="description">[Entrez une brève description de vous ici]</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">Voir mes projets</a>
+                    <a href="#contact" class="btn btn-secondary">Me contacter</a>
+                </div>
+            </div>
+            <div class="hero-image slide-in-right">
+                <div class="image-placeholder">[Image de profil ici]</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Visit Counter -->
+    <div class="visit-counter">
+        <span>Nombre de visites : <strong id="visit-count">0</strong></span>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+        <div class="container">
+            <h2 class="section-title fade-in-up">À propos</h2>
+            <div class="about-content">
+                <div class="about-text fade-in-up">
+                    <h3>[Entrez un titre de présentation ici]</h3>
+                    <p>[Entrez le premier paragraphe de votre présentation ici]</p>
+                    <p>[Entrez le deuxième paragraphe de votre présentation ici]</p>
+                    <p>[Entrez le troisième paragraphe de votre présentation ici]</p>
+                </div>
+                <div class="about-stats fade-in-up">
+                    <div class="stat-item">
+                        <h4>[Nombre]</h4>
+                        <p>[Type de statistique ici]</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>[Nombre]</h4>
+                        <p>[Type de statistique ici]</p>
+                    </div>
+                    <div class="stat-item">
+                        <h4>[Nombre]</h4>
+                        <p>[Type de statistique ici]</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills section">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Compétences</h2>
+            <div class="skills-grid">
+                <div class="skill-category fade-in-up">
+                    <h3>[Catégorie de compétence 1]</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 85%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 80%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-up">
+                    <h3>[Catégorie de compétence 2]</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 88%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 82%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 78%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category fade-in-up">
+                    <h3>[Catégorie de compétence 3]</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 92%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 87%"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">[Nom de compétence]</span>
+                            <div class="skill-bar">
+                                <div class="skill-progress" style="width: 83%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="projects section">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Projets</h2>
+            
+            <!-- Project Filters -->
+            <div class="project-filters fade-in-up">
+                <button class="filter-btn active" data-filter="all">Tous</button>
+                <button class="filter-btn" data-filter="web">[Catégorie 1]</button>
+                <button class="filter-btn" data-filter="mobile">[Catégorie 2]</button>
+                <button class="filter-btn" data-filter="design">[Catégorie 3]</button>
+            </div>
+
+            <!-- Project Carousel -->
+            <div class="carousel-container fade-in-up">
+                <button class="carousel-btn prev" aria-label="Previous project">‹</button>
+                <div class="carousel">
+                    <div class="carousel-track">
+                        <!-- Project Card 1 -->
+                        <div class="project-card" data-category="web">
+                            <div class="project-image">
+                                <div class="image-placeholder">[Image du projet 1 ici]</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>[Titre du projet 1]</h3>
+                                <p>[Description du projet 1 ici]</p>
+                                <div class="project-tags">
+                                    <span class="tag">[Technologie 1]</span>
+                                    <span class="tag">[Technologie 2]</span>
+                                    <span class="tag">[Technologie 3]</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Voir le projet</a>
+                                    <a href="#" class="project-link">Code source</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 2 -->
+                        <div class="project-card" data-category="mobile">
+                            <div class="project-image">
+                                <div class="image-placeholder">[Image du projet 2 ici]</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>[Titre du projet 2]</h3>
+                                <p>[Description du projet 2 ici]</p>
+                                <div class="project-tags">
+                                    <span class="tag">[Technologie 1]</span>
+                                    <span class="tag">[Technologie 2]</span>
+                                    <span class="tag">[Technologie 3]</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Voir le projet</a>
+                                    <a href="#" class="project-link">Code source</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 3 -->
+                        <div class="project-card" data-category="design">
+                            <div class="project-image">
+                                <div class="image-placeholder">[Image du projet 3 ici]</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>[Titre du projet 3]</h3>
+                                <p>[Description du projet 3 ici]</p>
+                                <div class="project-tags">
+                                    <span class="tag">[Technologie 1]</span>
+                                    <span class="tag">[Technologie 2]</span>
+                                    <span class="tag">[Technologie 3]</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Voir le projet</a>
+                                    <a href="#" class="project-link">Code source</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 4 -->
+                        <div class="project-card" data-category="web">
+                            <div class="project-image">
+                                <div class="image-placeholder">[Image du projet 4 ici]</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>[Titre du projet 4]</h3>
+                                <p>[Description du projet 4 ici]</p>
+                                <div class="project-tags">
+                                    <span class="tag">[Technologie 1]</span>
+                                    <span class="tag">[Technologie 2]</span>
+                                    <span class="tag">[Technologie 3]</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Voir le projet</a>
+                                    <a href="#" class="project-link">Code source</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 5 -->
+                        <div class="project-card" data-category="mobile">
+                            <div class="project-image">
+                                <div class="image-placeholder">[Image du projet 5 ici]</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>[Titre du projet 5]</h3>
+                                <p>[Description du projet 5 ici]</p>
+                                <div class="project-tags">
+                                    <span class="tag">[Technologie 1]</span>
+                                    <span class="tag">[Technologie 2]</span>
+                                    <span class="tag">[Technologie 3]</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Voir le projet</a>
+                                    <a href="#" class="project-link">Code source</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project Card 6 -->
+                        <div class="project-card" data-category="design">
+                            <div class="project-image">
+                                <div class="image-placeholder">[Image du projet 6 ici]</div>
+                            </div>
+                            <div class="project-content">
+                                <h3>[Titre du projet 6]</h3>
+                                <p>[Description du projet 6 ici]</p>
+                                <div class="project-tags">
+                                    <span class="tag">[Technologie 1]</span>
+                                    <span class="tag">[Technologie 2]</span>
+                                    <span class="tag">[Technologie 3]</span>
+                                </div>
+                                <div class="project-links">
+                                    <a href="#" class="project-link">Voir le projet</a>
+                                    <a href="#" class="project-link">Code source</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="carousel-btn next" aria-label="Next project">›</button>
+            </div>
+
+            <!-- Carousel Indicators -->
+            <div class="carousel-indicators"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+        <div class="container">
+            <h2 class="section-title fade-in-up">Contact</h2>
+            <div class="contact-content">
+                <div class="contact-info fade-in-up">
+                    <h3>Restons en contact</h3>
+                    <p>[Entrez un message d'invitation au contact ici]</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <span class="icon">📧</span>
+                            <div>
+                                <h4>Email</h4>
+                                <p>[Entrez votre email ici]</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="icon">📱</span>
+                            <div>
+                                <h4>Téléphone</h4>
+                                <p>[Entrez votre téléphone ici]</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="icon">📍</span>
+                            <div>
+                                <h4>Localisation</h4>
+                                <p>[Entrez votre localisation ici]</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link" aria-label="LinkedIn">[LinkedIn]</a>
+                        <a href="#" class="social-link" aria-label="GitHub">[GitHub]</a>
+                        <a href="#" class="social-link" aria-label="Twitter">[Twitter]</a>
+                        <a href="#" class="social-link" aria-label="Portfolio">[Portfolio]</a>
+                    </div>
+                </div>
+                <form id="contact-form" class="contact-form fade-in-up" action="/contact" method="POST" novalidate>
+                    <div class="form-group">
+                        <label for="name">Nom complet</label>
+                        <input type="text" id="name" name="name" placeholder="[Entrez votre nom]" required>
+                        <span class="error-message" id="name-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="[Entrez votre email]" required>
+                        <span class="error-message" id="email-error"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="[Entrez votre message ici]" required></textarea>
+                        <span class="error-message" id="message-error"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Envoyer le message</button>
+                    <div class="form-success" id="form-success">Message envoyé avec succès ! 🎉</div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 [Entrez votre nom ici]. Tous droits réservés.</p>
+            <p>Créé avec ❤️ en utilisant Go et HTML/CSS/JavaScript</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
