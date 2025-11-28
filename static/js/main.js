@@ -212,10 +212,10 @@ function initProjectFilters() {
             
             // Filtrer les projets
             projectCards.forEach(card => {
-                const category = card.dataset.category;
+                const categories = card.dataset.category.split(' ');
                 
-                if (filter === 'all' || category === filter) {
-                    card.style.display = 'flex';
+                if (filter === 'all' || categories.includes(filter)) {
+                    card.style.display = '';
                     card.style.animation = 'fadeIn 0.5s ease';
                 } else {
                     card.style.display = 'none';
@@ -322,9 +322,44 @@ function initFormValidation() {
     }
     
     function submitForm() {
-        const successMessage = document.getElementById('form-success');
+        // Récupérer les données du formulaire
+        const name = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const message = messageInput.value.trim();
+        
+        // Créer le contenu du fichier
+        const timestamp = new Date();
+        const dateStr = timestamp.toLocaleDateString('fr-FR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+        
+        const fileContent = `=== MESSAGE DE CONTACT ===\n\n` +
+            `Date: ${dateStr}\n` +
+            `Nom: ${name}\n` +
+            `Email: ${email}\n\n` +
+            `Message:\n${message}\n\n` +
+            `=========================`;
+        
+        // Créer un blob et télécharger le fichier
+        const blob = new Blob([fileContent], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        
+        const filenameTimestamp = timestamp.toISOString().replace(/[:.]/g, '-').slice(0, -5);
+        a.href = url;
+        a.download = `contact_${filenameTimestamp}_${name.replace(/\s+/g, '_')}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
         
         // Afficher le message de succès
+        const successMessage = document.getElementById('form-success');
         successMessage.classList.add('show');
         
         // Réinitialiser le formulaire
@@ -334,9 +369,6 @@ function initFormValidation() {
         setTimeout(() => {
             successMessage.classList.remove('show');
         }, 5000);
-        
-        // En production, vous soumettriez réellement le formulaire au serveur
-        // form.submit();
     }
 }
 

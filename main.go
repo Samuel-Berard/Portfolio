@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
+	"time"
 )
 
 type PageData struct {
@@ -35,7 +38,7 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data := PageData{
-		Title: "Portfolio - [Entrez votre nom ici]",
+		Title: "Portfolio - BERARD Samuel",
 	}
 
 	tmpl.Execute(w, data)
@@ -58,9 +61,53 @@ func contactHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Enregistrer le message dans un fichier texte
+	filename, fileContent, err := saveContactToFile(name, email, message)
+	if err != nil {
+		log.Printf("Erreur lors de l'enregistrement: %v", err)
+		http.Error(w, "Erreur lors de l'enregistrement du message", http.StatusInternalServerError)
+		return
+	}
+
 	// Ici vous pouvez traiter le message (envoyer un email, sauvegarder en DB, etc.)
 	log.Printf("Message reçu de %s (%s): %s", name, email, message)
 
-	// Redirection avec message de succès
-	http.Redirect(w, r, "/?success=true", http.StatusSeeOther)
+	// Proposer le téléchargement du fichier
+	w.Header().Set("Content-Disposition", "attachment; filename="+filename)
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+	w.Write([]byte(fileContent))
+}
+
+func saveContactToFile(name, email, message string) (string, string, error) {
+	// Créer le dossier "contacts" s'il n'existe pas
+	if err := os.MkdirAll("contacts", 0755); err != nil {
+		return "", "", err
+	}
+
+	// Générer un nom de fichier unique avec timestamp
+	timestamp := time.Now().Format("2006-01-02_15-04-05")
+	filename := fmt.Sprintf("contact_%s_%s.txt", timestamp, name)
+	filepath := fmt.Sprintf("contacts/%s", filename)
+
+	// Créer le contenu du fichier
+	content := fmt.Sprintf("=== MESSAGE DE CONTACT ===\n\n")
+	content += fmt.Sprintf("Date: %s\n", time.Now().Format("02/01/2006 à 15:04:05"))
+	content += fmt.Sprintf("Nom: %s\n", name)
+	content += fmt.Sprintf("Email: %s\n", email)
+	content += fmt.Sprintf("\nMessage:\n%s\n", message)
+	content += fmt.Sprintf("\n=========================\n")
+
+	// Créer le fichier sur le serveur
+	file, err := os.Create(filepath)
+	if err != nil {
+		return "", "", err
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(content)
+	if err != nil {
+		return "", "", err
+	}
+
+	return filename, content, nil
 }
