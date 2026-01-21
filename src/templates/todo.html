@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="todo-container">
+        <header class="todo-header">
+            <h1>📝 {{.Title}}</h1>
+            <a href="/" class="btn-back">← Retour au Portfolio</a>
+        </header>
+
+        <main class="todo-main">
+            <!-- Formulaire d'ajout -->
+            <section class="todo-form-section">
+                <h2>Ajouter une tâche</h2>
+                <form action="/todo/add" method="POST" class="todo-form">
+                    <div class="form-group">
+                        <input 
+                            type="text" 
+                            name="title" 
+                            placeholder="Entrez une nouvelle tâche..." 
+                            required 
+                            autofocus
+                            class="todo-input"
+                        >
+                        <button type="submit" class="btn-add">Ajouter</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Liste des todos -->
+            <section class="todo-list-section">
+                <h2>Mes tâches</h2>
+                {{if .Todos}}
+                    <div class="todo-stats">
+                        <span class="stat">
+                            Total: <strong>{{len .Todos}}</strong>
+                        </span>
+                        <span class="stat">
+                            Complétées: <strong>{{countCompleted .Todos}}</strong>
+                        </span>
+                        <span class="stat">
+                            Restantes: <strong>{{countRemaining .Todos}}</strong>
+                        </span>
+                    </div>
+                    <ul class="todo-list">
+                        {{range .Todos}}
+                        <li class="todo-item {{if .Completed}}completed{{end}}">
+                            <div class="todo-content">
+                                <form action="/todo/toggle" method="POST" class="todo-toggle-form">
+                                    <input type="hidden" name="id" value="{{.ID}}">
+                                    <button type="submit" class="todo-checkbox">
+                                        {{if .Completed}}
+                                            <span class="checkmark">✓</span>
+                                        {{else}}
+                                            <span class="checkmark-empty"></span>
+                                        {{end}}
+                                    </button>
+                                </form>
+                                <span class="todo-title">{{.Title}}</span>
+                                <span class="todo-date">{{formatDate .CreatedAt}}</span>
+                            </div>
+                            <form action="/todo/delete" method="POST" class="todo-delete-form">
+                                <input type="hidden" name="id" value="{{.ID}}">
+                                <button type="submit" class="btn-delete" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette tâche ?')">
+                                    🗑️
+                                </button>
+                            </form>
+                        </li>
+                        {{end}}
+                    </ul>
+                {{else}}
+                    <div class="empty-state">
+                        <p>🎉 Aucune tâche pour le moment!</p>
+                        <p class="empty-subtitle">Ajoutez votre première tâche ci-dessus</p>
+                    </div>
+                {{end}}
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
