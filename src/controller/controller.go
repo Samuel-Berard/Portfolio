@@ -44,6 +44,18 @@ func InitDB() error {
 		return fmt.Errorf("erreur lors du ping de la base de données: %v", err)
 	}
 
+	// Créer la table todo si elle n'existe pas
+	createTableSQL := `
+	CREATE TABLE IF NOT EXISTS todo (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		title VARCHAR(255) NOT NULL,
+		completed BOOLEAN DEFAULT false,
+		created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	)`
+	if _, err = db.Exec(createTableSQL); err != nil {
+		return fmt.Errorf("erreur lors de la création de la table: %v", err)
+	}
+
 	log.Println("Connexion à la base de données MySQL réussie")
 	return nil
 }
