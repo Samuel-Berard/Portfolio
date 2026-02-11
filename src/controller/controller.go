@@ -1,19 +1,52 @@
 package controller
 
 import (
-	"encoding/json"
+	"database/sql"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"portfolio/src/models"
 	"strconv"
 	"time"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var templates *template.Template
+var db *sql.DB
+
+// InitDB initialise la connexion à la base de données MySQL
+func InitDB() error {
+	var err error
+	// Récupérer les variables de connexion depuis l'environnement
+	dbUser := os.Getenv("SCALINGO_MYSQL_USER")
+	dbPassword := os.Getenv("SCALINGO_MYSQL_PASSWORD")
+	dbHost := os.Getenv("SCALINGO_MYSQL_HOST")
+	dbPort := os.Getenv("SCALINGO_MYSQL_PORT")
+	dbName := os.Getenv("SCALINGO_MYSQL_DB")
+
+	// Vérifier que toutes les variables sont définies
+	if dbUser == "" || dbHost == "" || dbPort == "" || dbName == "" {
+		return fmt.Errorf("variables de base de données manquantes (DB_USER, DB_HOST, DB_PORT, DB_NAME)")
+	}
+
+	// Construire le DSN: user:password@tcp(host:port)/database?parseTime=true
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", dbUser, dbPassword, dbHost, dbPort, dbName)
+	db, err = sql.Open("mysql", dsn)
+	if err != nil {
+		return fmt.Errorf("erreur lors de l'ouverture de la connexion: %v", err)
+	}
+
+	// Vérifier la connexion
+	if err = db.Ping(); err != nil {
+		return fmt.Errorf("erreur lors du ping de la base de données: %v", err)
+	}
+
+	log.Println("Connexion à la base de données MySQL réussie")
+	return nil
+}
 
 // InitTemplates charge tous les templates au démarrage de l'application
 func InitTemplates() {
@@ -141,50 +174,28 @@ func saveContactToFile(name, email, message string) (string, string, error) {
 
 // ========== TODO APP HANDLERS ==========
 
-const todosFile = "src/temp/todos.json"
-
-// loadTodos charge les todos depuis le fichier JSON
+// loadTodos charge les todos depuis la base de données MySQL
 func loadTodos() ([]models.Todo, error) {
-	// Créer le dossier temp s'il n'existe pas
-	if err := os.MkdirAll("src/temp", 0755); err != nil {
-		return nil, err
-	}
-
-	// Si le fichier n'existe pas, retourner une liste vide
-	if _, err := os.Stat(todosFile); os.IsNotExist(err) {
-		return []models.Todo{}, nil
-	}
-
-	// Lire le fichier
-	data, err := ioutil.ReadFile(todosFile)
+	rows, err := db.Query("SELECT id, title, completed, created_at FROM todo ORDER BY id DESC")
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("erreur lors de la requête SELECT: %v", err)
+	}
+	defer rows.Close()
+
+	var todos []models.Todo
+	for rows.Next() {
+		var todo models.Todo
+		if err := rows.Scan(&todo.ID, &todo.Title, &todo.Completed, &todo.CreatedAt); err != nil {
+			return nil, fmt.Errorf("erreur lors du scan: %v", err)
+		}
+		todos = append(todos, todo)
 	}
 
-	// Parser le JSON
-	var todos []models.Todo
-	if err := json.Unmarshal(data, &todos); err != nil {
-		return nil, err
+	if err = rows.Err(); err != nil {
+		return nil, fmt.Errorf("erreur lors du parcours des lignes: %v", err)
 	}
 
 	return todos, nil
-}
-
-// saveTodos sauvegarde les todos dans le fichier JSON
-func saveTodos(todos []models.Todo) error {
-	// Créer le dossier temp s'il n'existe pas
-	if err := os.MkdirAll("src/temp", 0755); err != nil {
-		return err
-	}
-
-	// Convertir en JSON
-	data, err := json.MarshalIndent(todos, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	// Écrire dans le fichier
-	return ioutil.WriteFile(todosFile, data, 0644)
 }
 
 // TodoHandler affiche la page des todos
@@ -226,35 +237,11 @@ func AddTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todos, err := loadTodos()
+	// Insérer le nouveau todo dans la base de données
+	_, err := db.Exec("INSERT INTO todo (title, completed) VALUES (?, false)", title)
 	if err != nil {
-		log.Printf("Erreur lors du chargement des todos: %v", err)
-		http.Error(w, "Erreur lors du chargement des todos", http.StatusInternalServerError)
-		return
-	}
-
-	// Trouver le prochain ID
-	nextID := 1
-	for _, todo := range todos {
-		if todo.ID >= nextID {
-			nextID = todo.ID + 1
-		}
-	}
-
-	// Créer le nouveau todo
-	newTodo := models.Todo{
-		ID:        nextID,
-		Title:     title,
-		Completed: false,
-		CreatedAt: time.Now(),
-	}
-
-	todos = append(todos, newTodo)
-
-	// Sauvegarder
-	if err := saveTodos(todos); err != nil {
-		log.Printf("Erreur lors de la sauvegarde: %v", err)
-		http.Error(w, "Erreur lors de la sauvegarde", http.StatusInternalServerError)
+		log.Printf("Erreur lors de l'insertion: %v", err)
+		http.Error(w, "Erreur lors de l'insertion", http.StatusInternalServerError)
 		return
 	}
 
@@ -275,32 +262,11 @@ func ToggleTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todos, err := loadTodos()
+	// Basculer l'état du todo
+	_, err = db.Exec("UPDATE todo SET completed = NOT completed WHERE id = ?", id)
 	if err != nil {
-		log.Printf("Erreur lors du chargement des todos: %v", err)
-		http.Error(w, "Erreur lors du chargement des todos", http.StatusInternalServerError)
-		return
-	}
-
-	// Trouver et basculer le todo
-	found := false
-	for i := range todos {
-		if todos[i].ID == id {
-			todos[i].Completed = !todos[i].Completed
-			found = true
-			break
-		}
-	}
-
-	if !found {
-		http.Error(w, "Todo non trouvé", http.StatusNotFound)
-		return
-	}
-
-	// Sauvegarder
-	if err := saveTodos(todos); err != nil {
-		log.Printf("Erreur lors de la sauvegarde: %v", err)
-		http.Error(w, "Erreur lors de la sauvegarde", http.StatusInternalServerError)
+		log.Printf("Erreur lors de la mise à jour: %v", err)
+		http.Error(w, "Erreur lors de la mise à jour", http.StatusInternalServerError)
 		return
 	}
 
@@ -321,25 +287,11 @@ func DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todos, err := loadTodos()
+	// Supprimer le todo
+	_, err = db.Exec("DELETE FROM todo WHERE id = ?", id)
 	if err != nil {
-		log.Printf("Erreur lors du chargement des todos: %v", err)
-		http.Error(w, "Erreur lors du chargement des todos", http.StatusInternalServerError)
-		return
-	}
-
-	// Trouver et supprimer le todo
-	newTodos := []models.Todo{}
-	for _, todo := range todos {
-		if todo.ID != id {
-			newTodos = append(newTodos, todo)
-		}
-	}
-
-	// Sauvegarder
-	if err := saveTodos(newTodos); err != nil {
-		log.Printf("Erreur lors de la sauvegarde: %v", err)
-		http.Error(w, "Erreur lors de la sauvegarde", http.StatusInternalServerError)
+		log.Printf("Erreur lors de la suppression: %v", err)
+		http.Error(w, "Erreur lors de la suppression", http.StatusInternalServerError)
 		return
 	}
 

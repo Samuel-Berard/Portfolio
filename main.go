@@ -7,9 +7,21 @@ import (
 
 	"portfolio/src/controller"
 	"portfolio/src/router"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	// Charger les variables d'environnement depuis .env
+	if err := godotenv.Load(); err != nil {
+		log.Println("Fichier .env non trouvé, utilisation des variables d'environnement système")
+	}
+
+	// Initialisation de la base de données
+	if err := controller.InitDB(); err != nil {
+		log.Fatalf("Erreur lors de l'initialisation de la base de données: %v", err)
+	}
+
 	// Initialisation des templates
 	controller.InitTemplates()
 
