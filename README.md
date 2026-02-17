@@ -2,6 +2,10 @@
 
 Site web portfolio/CV moderne et interactif créé avec Go, HTML5, CSS3 et JavaScript.
 
+## 🔗 Démo en ligne
+
+**URL du projet :** [https://portfolio-berard-samuel.osc-fr1.scalingo.io](https://portfolio-berard-samuel.osc-fr1.scalingo.io)
+
 ## 🌟 Fonctionnalités
 
 ### ✨ Interface Utilisateur
