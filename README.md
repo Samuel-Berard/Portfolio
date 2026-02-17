@@ -33,6 +33,8 @@ Site web portfolio/CV moderne et interactif créé avec Go, HTML5, CSS3 et JavaS
 
 - **Backend** : Go (Golang)
 - **Frontend** : HTML5, CSS3, JavaScript (ES6+)
+- **Conteneurisation** : Docker (multi-stage build)
+- **Déploiement** : Scalingo (PaaS)
 - **APIs** : IntersectionObserver, LocalStorage, Touch Events
 
 ## 📦 Installation
@@ -59,11 +61,67 @@ go run main.go
 http://localhost:8080
 ```
 
-## 📁 Structure du projet
+## � Docker
+
+Le projet est conteneurisé avec Docker pour faciliter le déploiement.
+
+### Architecture du Dockerfile
+
+Le Dockerfile utilise un **build multi-stage** pour optimiser la taille de l'image finale :
+
+1. **Étape de Build** : Utilise `golang:1.25` pour compiler l'application Go en binaire statique
+2. **Étape Runtime** : Utilise `alpine:latest` (~5MB) pour exécuter l'application
+
+### Commandes Docker
+
+```bash
+# Construire l'image
+docker build -t portfolio .
+
+# Lancer le conteneur
+docker run -p 8080:8080 portfolio
+
+# Lancer en arrière-plan
+docker run -d -p 8080:8080 portfolio
+```
+
+### Avantages du Multi-Stage Build
+- ✅ Image finale légère (~15MB au lieu de ~1GB)
+- ✅ Pas de dépendances de build dans l'image finale
+- ✅ Binaire statique (CGO_ENABLED=0)
+- ✅ Sécurité renforcée (moins de surface d'attaque)
+
+## 🚀 Déploiement Scalingo
+
+Le projet est déployé sur **Scalingo**, une plateforme PaaS française.
+
+### URL de production
+🔗 [https://portfolio-berard-samuel.osc-fr1.scalingo.io](https://portfolio-berard-samuel.osc-fr1.scalingo.io)
+
+### Déploiement automatique
+
+Scalingo détecte automatiquement le Dockerfile et construit l'image à chaque push :
+
+```bash
+# Ajouter le remote Scalingo
+git remote add scalingo git@ssh.osc-fr1.scalingo.com:portfolio-berard-samuel.git
+
+# Déployer
+git push scalingo main
+```
+
+### Configuration Scalingo
+- **Région** : osc-fr1 (Paris)
+- **Type de build** : Docker
+- **Port exposé** : 8080 (configuré automatiquement via la variable `PORT`)
+
+## �📁 Structure du projet
 
 ```
 Portfolio/
 ├── main.go                    # Serveur Go
+├── go.mod                     # Module Go
+├── Dockerfile                 # Configuration Docker multi-stage
 ├── templates/
 │   └── index.html            # Template HTML principal
 ├── static/
@@ -169,6 +227,8 @@ Ce projet démontre la maîtrise de :
 - **HTML5** : Sémantique, accessibilité, SEO
 - **CSS3** : Variables, Grid/Flexbox, animations, responsive
 - **JavaScript** : DOM, events, LocalStorage, APIs modernes
+- **Docker** : Multi-stage build, optimisation d'images, conteneurisation
+- **DevOps** : Déploiement CI/CD sur Scalingo, gestion de configuration
 - **UX/UI** : Design moderne, animations fluides, feedback utilisateur
 
 ## 🚧 Améliorations futures
